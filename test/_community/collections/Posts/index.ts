@@ -8,6 +8,11 @@ export const PostsCollection: CollectionConfig = {
   slug: postsSlug,
   admin: {
     useAsTitle: 'title',
+    components: {
+      edit: {
+        PublishButton: './collections/Posts/PublishButton.tsx#PublishButton',
+      },
+    },
   },
   fields: [
     {
