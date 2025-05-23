@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { BlocksFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 
 export const postsSlug = 'posts'
 
@@ -18,8 +18,35 @@ export const PostsCollection: CollectionConfig = {
       name: 'content',
       type: 'richText',
       editor: lexicalEditor({
-        features: ({ defaultFeatures }) => [...defaultFeatures],
+        features: ({ defaultFeatures }) => [
+          ...defaultFeatures,
+          BlocksFeature({
+            inlineBlocks: [
+              {
+                slug: 'inline-media',
+                fields: [
+                  {
+                    name: 'media',
+                    type: 'relationship',
+                    relationTo: ['media'],
+                    admin: {
+                      appearance: 'drawer',
+                    },
+                  },
+                ],
+              },
+            ],
+          }),
+        ],
       }),
+    },
+    {
+      name: 'media',
+      type: 'relationship',
+      relationTo: ['media'],
+      admin: {
+        appearance: 'drawer',
+      },
     },
   ],
 }
