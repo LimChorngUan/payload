@@ -8,26 +8,16 @@ export const MediaCollection: CollectionConfig = {
     create: () => true,
     read: () => true,
   },
-  fields: [],
-  upload: {
-    crop: true,
-    focalPoint: true,
-    imageSizes: [
-      {
-        name: 'thumbnail',
-        height: 200,
-        width: 200,
-      },
-      {
-        name: 'medium',
-        height: 800,
-        width: 800,
-      },
-      {
-        name: 'large',
-        height: 1200,
-        width: 1200,
+  hooks: {
+    afterChange: [
+      ({ doc, operation, req }) => {
+        if (operation === 'update' && req.context?.skipCloudStorage) {
+          throw new Error('User afterChange hook throws error')
+        }
+        return doc
       },
     ],
   },
+  fields: [],
+  upload: true,
 }
