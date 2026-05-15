@@ -1,4 +1,5 @@
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { s3Storage } from '@payloadcms/storage-s3'
 import { fileURLToPath } from 'node:url'
 import path from 'path'
 
@@ -43,4 +44,16 @@ export default buildConfigWithDefaults({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
+  plugins: [
+  s3Storage({
+    collections: { media: true },
+    bucket: process.env.S3_BUCKET ?? 'payload-bucket',
+    config: {
+      endpoint: process.env.S3_ENDPOINT ?? 'http://localhost:4566',
+      region: process.env.S3_REGION ?? 'us-east-1',
+      forcePathStyle: true,
+      credentials: { accessKeyId: 'test', secretAccessKey: 'test' },
+    },
+  }),
+],
 })
